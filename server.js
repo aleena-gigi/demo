@@ -1,5 +1,6 @@
 const express=require("express")
 const app=express()
+const axios=require("axios")
 require('dotenv').config()
 const AWS=require('aws-sdk')
 
@@ -54,10 +55,16 @@ app.get("/register",async(req,res)=>{
     let data=await user(id)
     if (data!==undefined){
         if (data.Password==pswd){
-            res.send("Logged in ")
+            console.log("Logged in")
+            axios.get("http://localhost:4000/home").then(function(response){
+            res.send(response.data)
+            }).catch(function(err){console.log(err)})
         }
         else res.send("Incorrect Password")
     }
     else res.send("User doesn't exists")
+ })
+ app.get("/home",(req,res)=>{
+    res.send("Welcome to the home page")
  })
  app.listen(4000)
