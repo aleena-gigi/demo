@@ -22,7 +22,9 @@ let user=async(id)=>{
     let data= await dynamoclient.get(params).promise()       
     return data.Item
 }
-
+app.get("/",(req,res)=>{
+    res.send("Login to continue")
+})
 app.get("/register",async(req,res)=>{
     id=req.query.emailId
     pswd=req.query.Password
@@ -55,7 +57,6 @@ app.get("/register",async(req,res)=>{
     let data=await user(id)
     if (data!==undefined){
         if (data.Password==pswd){
-            console.log("Logged in")
             axios.get("http://localhost:4000/home").then(function(response){
             res.send(response.data)
             }).catch(function(err){console.log(err)})
